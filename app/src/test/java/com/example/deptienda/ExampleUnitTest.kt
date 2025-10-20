@@ -1,4 +1,4 @@
-package com.example.deptienda
+package com.example.com.dep
 
 import org.junit.Test
 
