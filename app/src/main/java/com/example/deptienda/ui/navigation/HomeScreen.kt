@@ -1,4 +1,4 @@
-package com.example.com.dep.ui.navigation
+package com.example.deptienda.ui.navigation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
@@ -11,14 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.deptienda.data.models.Product
 import com.example.com.dep.ui.components.LoadingIndicator
 import com.example.com.dep.ui.components.ProductCard
-import com.example.com.dep.viewmodel.MainViewModel
+import com.example.deptienda.viewmodel.MainViewModel
+import org.tensorflow.lite.support.label.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onProductClick: (com.example.com.dep.data.models.Product) -> Unit,
+    onProductClick: (Product) -> Unit,
     onCartClick: () -> Unit,
     onCategoriesClick: () -> Unit, // ✅ AGREGAR ESTE PARÁMETRO
     viewModel: MainViewModel

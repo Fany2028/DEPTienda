@@ -1,7 +1,7 @@
 package com.example.com.dep.data.dao
 
 import androidx.room.*
-import com.example.com.dep.data.models.CartItem
+import com.example.deptienda.data.models.CartItem
 import kotlinx.coroutines.flow.Flow
 
 @Dao

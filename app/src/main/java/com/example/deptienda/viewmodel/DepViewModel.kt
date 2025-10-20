@@ -3,12 +3,12 @@ package com.example.deptienda.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigationevent.NavigationEvent
 import com.example.deptienda.model.LoginForm
 import com.example.deptienda.model.RegisterForm
 import com.example.deptienda.model.User
 import com.example.deptienda.navigation.NavigationEvent
 import com.example.deptienda.navigation.Screen
-import com.example.deptienda.repository.UserRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -27,7 +27,7 @@ class DepViewModel : ViewModel() {
         userRepository = UserRepository(context)
     }
 
-    // --- NAVEACIÓN ---
+    // --- NAVEGACIÓN ---
     private val _navigationEvents = MutableSharedFlow<NavigationEvent>()
     val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents.asSharedFlow()
 
@@ -220,3 +220,5 @@ class DepViewModel : ViewModel() {
         _message.value = null
     }
 }
+
+annotation class UserRepository(val context: Context)

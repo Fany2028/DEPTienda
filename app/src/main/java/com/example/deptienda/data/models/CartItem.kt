@@ -1,7 +1,6 @@
-package com.example.com.dep.data.models
+package com.example.deptienda.data.models
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "cart_items",

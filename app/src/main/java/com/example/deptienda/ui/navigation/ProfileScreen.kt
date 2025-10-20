@@ -1,4 +1,4 @@
-package com.example.com.dep.ui.navigation
+package com.example.deptienda.ui.navigation
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,13 +10,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.com.dep.data.models.User
-import com.example.com.dep.ui.components.LoadingIndicator
-import com.example.com.dep.viewmodel.MainViewModel
-import com.example.com.dep.viewmodel.ProfileViewModel
+import com.example.deptienda.data.models.User
+import com.example.deptienda.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -228,7 +227,7 @@ private fun ProfileOptions(
 
 @Composable
 private fun ProfileOptionItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     subtitle: String,
     onClick: () -> Unit,

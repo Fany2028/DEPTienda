@@ -1,4 +1,4 @@
-package com.example.com.dep.ui.navigation
+package com.example.deptienda.ui.navigation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,9 +15,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.com.dep.data.models.Product
+import com.example.deptienda.data.models.Product
 import com.example.com.dep.ui.components.PriceText
-import com.example.com.dep.viewmodel.MainViewModel
+import com.example.deptienda.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,8 +81,7 @@ fun ProductDetailScreen(
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .padding(paddingValues)
+            modifier = padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
             AsyncImage(

@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.com.dep.data.models.Product
+import com.example.deptienda.data.models.Product
 
 
 @OptIn(ExperimentalMaterial3Api::class)
