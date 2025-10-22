@@ -1,7 +1,8 @@
-package com.example.com.dep.viewmodel
+package com.example.deptienda.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.deptienda.viewmodel.CarritoViewModel
 
 class CarritoViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")

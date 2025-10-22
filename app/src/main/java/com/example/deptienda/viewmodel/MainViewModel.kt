@@ -120,7 +120,7 @@ class MainViewModel : ViewModel() {
                 if (existingItem != null) {
                     val updatedItems = _cartItems.value.map { item ->
                         if (item.productId == product.id && item.selectedSize == size && item.selectedColor == color) {
-                            item.copy(quantity = item.quantity + 1)
+                            item.copy(,,, quantity = item.quantity + 1,)
                         } else {
                             item
                         }
@@ -128,11 +128,9 @@ class MainViewModel : ViewModel() {
                     _cartItems.value = updatedItems
                 } else {
                     val newItem = CartItem(
-                        userId = "default_user",
                         productId = product.id,
                         selectedSize = size,
                         selectedColor = color,
-                        quantity = 1
                     )
                     _cartItems.value = _cartItems.value + newItem
                 }
@@ -150,7 +148,7 @@ class MainViewModel : ViewModel() {
                         if (newQuantity <= 0) {
                             return@map null
                         }
-                        item.copy(quantity = newQuantity)
+                        item.copy(,,, quantity = newQuantity,)
                     } else {
                         item
                     }

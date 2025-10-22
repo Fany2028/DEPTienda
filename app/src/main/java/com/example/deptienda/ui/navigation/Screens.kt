@@ -1,4 +1,4 @@
-package com.example.com.dep.ui.navigation
+package com.example.deptienda.ui.navigation
 
 sealed class Screens(val route: String) {
     object HomeScreen : Screens("home_screen")

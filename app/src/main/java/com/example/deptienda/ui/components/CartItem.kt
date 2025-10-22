@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.com.dep.ui.navigation.Screens
+import com.example.deptienda.ui.navigation.Screens
 
 @Composable
 fun BottomBar(

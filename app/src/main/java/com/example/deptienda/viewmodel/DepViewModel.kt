@@ -1,14 +1,15 @@
 package com.example.deptienda.viewmodel
 
 import android.content.Context
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigationevent.NavigationEvent
-import com.example.deptienda.model.LoginForm
-import com.example.deptienda.model.RegisterForm
-import com.example.deptienda.model.User
-import com.example.deptienda.navigation.NavigationEvent
-import com.example.deptienda.navigation.Screen
+import com.example.deptienda.data.models.User
+//import com.example.deptienda.data.models.LoginForm
+//import com.example.deptienda.data.models.RegisterForm
+//import com.example.deptienda.ui.navigation.NavigationEvent
+//import com.example.deptienda.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -32,7 +33,7 @@ class DepViewModel : ViewModel() {
     val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents.asSharedFlow()
 
     // --- FORMULARIO DE REGISTRO ---
-    private val _registerForm = MutableStateFlow(RegisterForm())
+    private val _registerForm = MutableStateFlow(RegisterForm)
     val registerForm: StateFlow<RegisterForm> = _registerForm.asStateFlow()
 
     private val _registerErrors = MutableStateFlow<Map<String, String>>(emptyMap())
@@ -40,6 +41,9 @@ class DepViewModel : ViewModel() {
 
     // --- FORMULARIO DE LOGIN ---
     private val _loginForm = MutableStateFlow(LoginForm())
+
+    annotation class LoginForm
+
     val loginForm: StateFlow<LoginForm> = _loginForm.asStateFlow()
 
     private val _loginErrors = MutableStateFlow<Map<String, String>>(emptyMap())
@@ -53,7 +57,7 @@ class DepViewModel : ViewModel() {
     private val _message = MutableStateFlow<String?>(null)
     val message: StateFlow<String?> = _message.asStateFlow()
 
-    // --- FUNCIONES DE NAVEACIÓN ---
+    // --- FUNCIONES DE NAVEGACIÓN ---
     fun navigateTo(screen: Screen) {
         viewModelScope.launch {
             _navigationEvents.emit(NavigationEvent.NavigateTo(route = screen))

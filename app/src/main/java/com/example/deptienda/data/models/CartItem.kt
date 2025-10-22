@@ -12,7 +12,8 @@ data class CartItem(
     val selectedSize: String,
     val selectedColor: String,
     var quantity: Int = 1,
-    val addedAt: Long = System.currentTimeMillis()
+    val addedAt: Long = System.currentTimeMillis(),
+    val cartItem: CartItem
 ) {
     // Esta propiedad no se persiste en Room
     val totalPrice: Double

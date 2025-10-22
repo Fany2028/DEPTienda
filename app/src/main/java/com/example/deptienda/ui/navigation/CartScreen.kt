@@ -175,7 +175,7 @@ private fun CartContent(
                 val product = products.find { it.id == cartItem.productId }
                 CartItem(
                     cartItem = cartItem,
-                    product = product, // ✅ Pasar el producto encontrado
+                    product = product, // Pasar el producto encontrado
                     onQuantityChange = { newQuantity ->
                         onQuantityChange(cartItem, newQuantity)
                     },
