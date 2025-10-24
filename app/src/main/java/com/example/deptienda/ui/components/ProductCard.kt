@@ -1,4 +1,4 @@
-package com.example.com.dep.ui.components
+package com.example.deptienda.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.deptienda.data.models.Product
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

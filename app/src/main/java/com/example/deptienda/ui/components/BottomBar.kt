@@ -1,4 +1,4 @@
-package com.example.com.dep.ui.components
+package com.example.deptienda.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.deptienda.ui.components.BottomBarItem
 import com.example.deptienda.ui.navigation.Screens
 
 @Composable
@@ -62,7 +61,6 @@ fun BottomBar(
                     }
                 },
                 icon = {
-                    // ✅ VERSIÓN SIN BADGE - Más simple
                     Box(
                         modifier = Modifier.wrapContentSize(),
                         contentAlignment = Alignment.TopEnd

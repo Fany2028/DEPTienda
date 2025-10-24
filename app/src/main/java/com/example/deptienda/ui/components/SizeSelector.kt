@@ -1,4 +1,4 @@
-package com.example.com.dep.ui.components
+package com.example.deptienda.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow

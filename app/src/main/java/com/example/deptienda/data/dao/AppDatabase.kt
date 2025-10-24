@@ -1,21 +1,15 @@
-package com.example.com.dep.data.dao
+package com.example.deptienda.data.dao
 
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import android.content.Context
+import androidx.databinding.adapters.Converters
 import com.example.deptienda.data.models.Product
 import com.example.deptienda.data.models.User
 import com.example.deptienda.data.models.CartItem
 import com.example.deptienda.data.models.Order
-import com.example.deptienda.data.dao.OrderDao
-import com.example.deptienda.data.dao.ProductDao
-import com.example.deptienda.data.dao.UserDao
-
-
-
-
 
 @Database(
     entities = [

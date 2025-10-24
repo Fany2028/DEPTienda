@@ -1,16 +1,15 @@
-package com.example.com.dep.viewmodel
+package com.example.deptienda.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.com.dep.data.models.CartItem
-import com.example.com.dep.data.models.Product
+import com.example.deptienda.data.models.CartItem
+import com.example.deptienda.data.models.Product // ✅ Import correcto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products.asStateFlow()
 
@@ -51,7 +50,7 @@ class MainViewModel : ViewModel() {
                         originalPrice = 24.99,
                         imageUrl = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
                         category = "Camisetas",
-                        description = "Camiseta de algodón 100% básica, perfecta para uso diario."
+                        description = "Camiseta de algodón 100% básica, perfecta para uso diario"
                     ),
                     Product(
                         id = "2",
@@ -59,7 +58,7 @@ class MainViewModel : ViewModel() {
                         price = 49.99,
                         imageUrl = "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
                         category = "Pantalones",
-                        description = "Jeans ajustados de corte moderno, cómodos y elegantes."
+                        description = "Jeans ajustados de corte moderno, cómodos y elegantes"
                     ),
                     Product(
                         id = "3",
@@ -68,7 +67,7 @@ class MainViewModel : ViewModel() {
                         originalPrice = 49.99,
                         imageUrl = "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500",
                         category = "Sudaderas",
-                        description = "Sudadera cómoda con capucha, ideal para días frescos."
+                        description = "Sudadera cómoda con capucha, ideal para días frescos"
                     ),
                     Product(
                         id = "4",
@@ -76,7 +75,7 @@ class MainViewModel : ViewModel() {
                         price = 79.99,
                         imageUrl = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
                         category = "Calzado",
-                        description = "Zapatos deportivos ultraligeros para máximo rendimiento."
+                        description = "Zapatos deportivos ultraligeros para máximo rendimiento"
                     ),
                     Product(
                         id = "5",
@@ -85,7 +84,7 @@ class MainViewModel : ViewModel() {
                         originalPrice = 69.99,
                         imageUrl = "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
                         category = "Chaquetas",
-                        description = "Chaqueta denim clásica, nunca pasa de moda."
+                        description = "Chaqueta denim clásica, nunca pasa de moda"
                     ),
                     Product(
                         id = "6",
@@ -93,7 +92,7 @@ class MainViewModel : ViewModel() {
                         price = 34.99,
                         imageUrl = "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500",
                         category = "Vestidos",
-                        description = "Vestido ligero perfecto para los días de verano."
+                        description = "Vestido ligero perfecto para los días de verano"
                     )
                 )
 
@@ -120,7 +119,7 @@ class MainViewModel : ViewModel() {
                 if (existingItem != null) {
                     val updatedItems = _cartItems.value.map { item ->
                         if (item.productId == product.id && item.selectedSize == size && item.selectedColor == color) {
-                            item.copy(,,, quantity = item.quantity + 1,)
+                            item.copy(quantity = item.quantity + 1)
                         } else {
                             item
                         }
@@ -128,9 +127,14 @@ class MainViewModel : ViewModel() {
                     _cartItems.value = updatedItems
                 } else {
                     val newItem = CartItem(
+                        id = "${product.id}_${size}_${color}",
                         productId = product.id,
+                        productName = product.name,
+                        productPrice = product.price,
+                        productImage = product.imageUrl,
                         selectedSize = size,
                         selectedColor = color,
+                        quantity = 1
                     )
                     _cartItems.value = _cartItems.value + newItem
                 }
@@ -148,7 +152,7 @@ class MainViewModel : ViewModel() {
                         if (newQuantity <= 0) {
                             return@map null
                         }
-                        item.copy(,,, quantity = newQuantity,)
+                        item.copy(quantity = newQuantity)
                     } else {
                         item
                     }
@@ -185,10 +189,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun getCartTotal(): Double {
-        return _cartItems.value.sumOf {
-            val product = _products.value.find { product -> product.id == it.productId }
-            (product?.price ?: 0.0) * it.quantity
-        }
+        return _cartItems.value.sumOf { it.productPrice * it.quantity }
     }
 
     fun getCartItemsCount(): Int {
@@ -205,49 +206,36 @@ class MainViewModel : ViewModel() {
 
     // NUEVAS FUNCIONES PARA MEJORAR EL CARTSCREEN
 
-    /**
-     * Obtiene el producto asociado a un CartItem
-     */
+    /**Obtiene producto asociado a un CartItem**/
     fun getProductForCartItem(cartItem: CartItem): Product? {
         return _products.value.find { it.id == cartItem.productId }
     }
 
-    /**
-     * Calcula el total de un CartItem específico
-     */
+    /**Calcula el total de un CartItem específico**/
     fun getCartItemTotal(cartItem: CartItem): Double {
-        val product = getProductForCartItem(cartItem)
-        return (product?.price ?: 0.0) * cartItem.quantity
+        return cartItem.productPrice * cartItem.quantity
     }
 
-    /**
-     * Obtiene todos los productos del carrito con su información completa
-     */
+    /**Obtiene los productos del carrito con su información completa**/
     fun getCartItemsWithProducts(): List<Pair<CartItem, Product?>> {
         return _cartItems.value.map { cartItem ->
             cartItem to getProductForCartItem(cartItem)
         }
     }
 
-    /**
-     * Selecciona una categoría para filtrar productos
-     */
+    /**Selecciona una categoría para filtrar productos**/
     fun selectCategory(category: String?) {
         _selectedCategory.value = category
     }
 
-    /**
-     * Obtiene productos filtrados por categoría seleccionada
-     */
+    /**Obtiene productos filtrados por categoría seleccionada**/
     fun getFilteredProducts(): List<Product> {
         return _selectedCategory.value?.let { category ->
             _products.value.filter { it.category == category }
         } ?: _products.value
     }
 
-    /**
-     * Busca productos por nombre
-     */
+    /**Busca productos por nombre**/
     fun searchProducts(query: String): List<Product> {
         return if (query.isBlank()) {
             _products.value
@@ -260,32 +248,24 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Obtiene todas las categorías disponibles
-     */
+    /**Obtiene todas las categorías disponibles**/
     fun getCategories(): List<String> {
         return _products.value.map { it.category }.distinct()
     }
 
-    /**
-     * Verifica si un producto está en el carrito
-     */
+    /**Verifica si un producto está en el carrito**/
     fun isProductInCart(productId: String): Boolean {
         return _cartItems.value.any { it.productId == productId }
     }
 
-    /**
-     * Obtiene la cantidad de un producto específico en el carrito
-     */
+    /**Obtiene la cantidad de un producto específico en el carrito**/
     fun getProductQuantityInCart(productId: String): Int {
         return _cartItems.value
             .filter { it.productId == productId }
             .sumOf { it.quantity }
     }
 
-    /**
-     * Recarga los productos (útil para pull-to-refresh)
-     */
+    /**Recarga los productos (útil para pull-to-refresh)**/
     fun refreshProducts() {
         loadSampleProducts()
     }

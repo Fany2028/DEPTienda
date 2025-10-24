@@ -1,8 +1,8 @@
-package com.example.com.dep.viewmodel
+package com.example.deptienda.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.com.dep.data.models.User
+import com.example.deptienda.data.models.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,9 +34,9 @@ class ProfileViewModel : ViewModel() {
                 val sampleUser = User(
                     id = "1",
                     name = "Juan Pérez",
-                    email = "juan.perez@example.com",
-                    phone = "+1234567890",
-                    address = "Calle Principal 123, Ciudad"
+                    email = "ju.perez@duocuc.cl",
+                    phone = "+56 9 8736 9183",
+                    address = "Calle Principal 123, Santiago, Chile"
                 )
 
                 _user.value = sampleUser
@@ -52,7 +52,6 @@ class ProfileViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                // Simular actualización
                 kotlinx.coroutines.delay(500)
                 _user.value = user
             } catch (e: Exception) {

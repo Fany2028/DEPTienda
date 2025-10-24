@@ -1,30 +1,45 @@
-package com.example.com.dep.data.dao
+package com.example.deptienda.data.dao
 
 import androidx.room.TypeConverter
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+
+// ✅ Asegúrate de que esta importación sea correcta
+// Si CartItem está en otro paquete, ajusta la ruta
+import com.example.deptienda.data.models.CartItem
 
 class Converters {
     private val gson = Gson()
 
     @TypeConverter
-    fun fromStringList(value: List<String>): String {
-        return gson.toJson(value)
+    fun fromStringList(value: List<String>?): String {
+        return gson.toJson(value ?: emptyList<String>())
     }
 
     @TypeConverter
-    fun toStringList(value: String): List<String> {
-        return gson.fromJson(value, object : TypeToken<List<String>>() {}.type)
+    fun toStringList(value: String?): List<String> {
+        if (value.isNullOrEmpty()) return emptyList<String>()
+        return try {
+            val listType = object : TypeToken<List<String>>() {}.type
+            gson.fromJson(value, listType) ?: emptyList<String>()
+        } catch (e: Exception) {
+            emptyList<String>()
+        }
     }
 
     @TypeConverter
-    fun fromCartItemList(value: List<com.example.com.dep.data.models.CartItem>): String {
-        return gson.toJson(value)
+    fun fromCartItemList(value: List<CartItem>?): String {
+        return gson.toJson(value ?: emptyList<CartItem>())
     }
 
     @TypeConverter
-    fun toCartItemList(value: String): List<com.example.com.dep.data.models.CartItem> {
-        return gson.fromJson(value, object : TypeToken<List<com.example.com.dep.data.models.CartItem>>() {}.type)
+    fun toCartItemList(value: String?): List<CartItem> {
+        if (value.isNullOrEmpty()) return emptyList<CartItem>()
+        return try {
+            val listType = object : TypeToken<List<CartItem>>() {}.type
+            gson.fromJson(value, listType) ?: emptyList<CartItem>()
+        } catch (e: Exception) {
+            emptyList<CartItem>()
+        }
     }
 }

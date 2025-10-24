@@ -12,17 +12,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.deptienda.data.models.Product
-import com.example.com.dep.ui.components.LoadingIndicator
-import com.example.com.dep.ui.components.ProductCard
+import com.example.deptienda.ui.components.LoadingIndicator
+import com.example.deptienda.ui.components.ProductCard
 import com.example.deptienda.viewmodel.MainViewModel
-import org.tensorflow.lite.support.label.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onProductClick: (Product) -> Unit,
     onCartClick: () -> Unit,
-    onCategoriesClick: () -> Unit, // ✅ AGREGAR ESTE PARÁMETRO
+    onCategoriesClick: () -> Unit,
     viewModel: MainViewModel
 ) {
     val products by viewModel.products.collectAsStateWithLifecycle()
@@ -50,7 +49,7 @@ fun HomeScreen(
                         )
                     }
 
-                    // Botón del carrito con badge
+                    // Botón carrito con badge
                     BadgedBox(
                         badge = {
                             if (cartCount > 0) {

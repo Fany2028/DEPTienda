@@ -1,5 +1,6 @@
 package com.example.deptienda.ui.navigation
 
+import CartItem
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,8 +42,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.deptienda.data.models.CartItem
 import com.example.deptienda.data.models.Product
-import com.example.com.dep.ui.components.EmptyState
-import com.example.com.dep.ui.components.LoadingIndicator
+import com.example.deptienda.ui.components.EmptyState
+import com.example.deptienda.ui.components.LoadingIndicator
 import com.example.deptienda.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,7 +124,7 @@ fun CartScreen(
                         products = products,
                         onQuantityChange = { cartItem, newQuantity ->
                             viewModel.updateCartItemQuantity(
-                                cartItem.productId, // ✅ Cambiado de product.id a productId
+                                cartItem.productId,
                                 cartItem.selectedSize,
                                 cartItem.selectedColor,
                                 newQuantity
@@ -131,7 +132,7 @@ fun CartScreen(
                         },
                         onRemoveItem = { cartItem ->
                             viewModel.removeFromCart(
-                                cartItem.productId, // ✅ Cambiado de product.id a productId
+                                cartItem.productId,
                                 cartItem.selectedSize,
                                 cartItem.selectedColor
                             )
@@ -153,7 +154,6 @@ private fun CartContent(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        // Resumen rápido
         CartSummary(
             itemCount = cartItems.sumOf { it.quantity },
             total = cartItems.sumOf { cartItem ->
@@ -171,11 +171,14 @@ private fun CartContent(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-            items(cartItems, key = { "${it.productId}-${it.selectedSize}-${it.selectedColor}" }) { cartItem ->
+            items(
+                items = cartItems,
+                key = { cartItem -> "${cartItem.productId}-${cartItem.selectedSize}-${cartItem.selectedColor}" }
+            ) { cartItem ->
                 val product = products.find { it.id == cartItem.productId }
                 CartItem(
                     cartItem = cartItem,
-                    product = product, // Pasar el producto encontrado
+                    product = product,
                     onQuantityChange = { newQuantity ->
                         onQuantityChange(cartItem, newQuantity)
                     },
@@ -203,7 +206,7 @@ private fun CartSummary(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "Resumen del Pedido",
+                text = "Resumen de su pedido",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth(),
@@ -336,7 +339,7 @@ private fun EmptyCartState(
     ) {
         EmptyState(
             title = "Tu carrito está vacío",
-            message = "Explora nuestros productos y encuentra algo increíble para agregar a tu carrito."
+            message = "Explora nuestros productos y encuentra cosas increíble para ti"
         )
 
         Spacer(modifier = Modifier.height(32.dp))

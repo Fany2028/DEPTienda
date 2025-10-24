@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.deptienda.data.models.User
 import com.example.deptienda.viewmodel.MainViewModel
+import com.example.deptienda.data.models.User
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,14 +25,14 @@ fun ProfileScreen(
     onViewOrders: () -> Unit,
     viewModel: MainViewModel
 ) {
-    // Por simplicidad, vamos a usar datos de ejemplo para el perfil
+    // Vamos a usar datos de ejemplo para el perfil
     val user = remember {
         User(
             id = "1",
             name = "Juan Pérez",
-            email = "juan.perez@example.com",
-            phone = "+1 234 567 8900",
-            address = "Calle Principal 123, Ciudad, País"
+            email = "ju.perez@duocuc.cl",
+            phone = "+56 9 8127 3819",
+            address = "Calle Principal 123, Santiago, Chile"
         )
     }
 
@@ -256,7 +256,7 @@ private fun ProfileOptionItem(
         },
         trailingContent = {
             Icon(
-                imageVector = Icons.Default.ChevronRight,
+                imageVector = Icons.Default.Home ,
                 contentDescription = "Ir",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )

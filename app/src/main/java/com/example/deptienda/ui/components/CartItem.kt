@@ -1,111 +1,124 @@
-package com.example.deptienda.ui.components
-
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.deptienda.ui.navigation.Screens
+import coil.compose.AsyncImage
+import com.example.deptienda.data.models.CartItem
+import com.example.deptienda.data.models.Product
+import com.example.deptienda.ui.components.QuantitySelector
 
 @Composable
-fun BottomBar(
-    navController: NavController,
-    cartItemsCount: Int = 0
+fun CartItem(
+    cartItem: CartItem,
+    product: Product?,
+    onQuantityChange: (Int) -> Unit,
+    onRemove: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val navBackStackEntry = navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry.value?.destination?.route
-
-    val items = listOf(
-        BottomBarItem(
-            route = Screens.HomeScreen.route,
-            icon = Icons.Default.Home,
-            label = "Inicio"
-        ),
-        BottomBarItem(
-            route = Screens.CartScreen.route,
-            icon = Icons.Default.ShoppingCart,
-            label = "Carrito",
-            badgeCount = cartItemsCount
-        ),
-        BottomBarItem(
-            route = Screens.ProfileScreen.route,
-            icon = Icons.Default.Person,
-            label = "Perfil"
-        )
-    )
-
-    NavigationBar {
-        items.forEach { item ->
-            val isSelected = currentRoute == item.route
-
-            NavigationBarItem(
-                selected = isSelected,
-                onClick = {
-                    if (currentRoute != item.route) {
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                },
-                icon = {
-                    // ✅ VERSIÓN SIN BADGE - Más simple
-                    Box(
-                        modifier = Modifier.wrapContentSize(),
-                        contentAlignment = Alignment.TopEnd
-                    ) {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = item.label
-                        )
-
-                        // Badge personalizado
-                        if (item.badgeCount > 0 && item.route == Screens.CartScreen.route) {
-                            Box(
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .align(Alignment.TopEnd)
-                                    .offset(x = 8.dp, y = (-4).dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = if (item.badgeCount > 99) "99+"
-                                    else item.badgeCount.toString(),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .background(
-                                            color = MaterialTheme.colorScheme.primary,
-                                            shape = MaterialTheme.shapes.small
-                                        )
-                                        .wrapContentSize()
-                                )
-                            }
-                        }
-                    }
-                },
-                label = { Text(item.label) }
+    Card(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Imagen del producto
+            AsyncImage(
+                model = product?.imageUrl ?: cartItem.imageUrl,
+                contentDescription = product?.name ?: cartItem.productName,
+                modifier = Modifier
+                    .size(80.dp)
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        MaterialTheme.shapes.medium
+                    ),
+                contentScale = ContentScale.Crop
             )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // Información del producto
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = product?.name ?: cartItem.productName,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 2
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Talla: ${cartItem.selectedSize}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Text(
+                    text = "Color: ${cartItem.selectedColor}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "$${String.format("%.2f", product?.price ?: cartItem.price)}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            // Controles de cantidad y eliminar
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Selector de cantidad
+                QuantitySelector(
+                    quantity = cartItem.quantity,
+                    onQuantityChange = onQuantityChange,
+                    modifier = Modifier.width(100.dp)
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Botón eliminar
+                IconButton(
+                    onClick = onRemove,
+                    modifier = Modifier.size(24.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Eliminar",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         }
     }
 }
-
-data class BottomBarItem(
-    val route: String,
-    val icon: ImageVector,
-    val label: String,
-    val badgeCount: Int = 0
-)

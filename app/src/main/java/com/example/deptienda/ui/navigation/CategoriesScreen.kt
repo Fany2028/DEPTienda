@@ -18,8 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.com.dep.ui.components.CategoryCard
 import com.example.deptienda.viewmodel.MainViewModel
+import com.example.deptienda.ui.components.CategoryCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

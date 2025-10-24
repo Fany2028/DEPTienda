@@ -1,4 +1,4 @@
-package com.example.com.dep.data.dao
+package com.example.deptienda.data.dao
 
 import androidx.room.*
 import com.example.deptienda.data.models.CartItem

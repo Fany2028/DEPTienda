@@ -9,15 +9,16 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Modifier
 import coil.compose.AsyncImage
-import com.example.deptienda.data.models.Product
-import com.example.com.dep.ui.components.PriceText
 import com.example.deptienda.viewmodel.MainViewModel
+import com.example.deptienda.data.models.Product
+import com.example.deptienda.ui.components.PriceText
+import androidx.compose.foundation.layout.padding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,7 +82,8 @@ fun ProductDetailScreen(
         }
     ) { paddingValues ->
         Column(
-            modifier = padding(paddingValues)
+            modifier = Modifier
+                .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
             AsyncImage(
