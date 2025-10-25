@@ -3,11 +3,12 @@ package com.example.deptienda.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deptienda.data.models.CartItem
-import com.example.deptienda.data.models.Product // ✅ Import correcto
+import com.example.deptienda.data.models.Product
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class MainViewModel : ViewModel() {
     private val _products = MutableStateFlow<List<Product>>(emptyList())
@@ -25,7 +26,6 @@ class MainViewModel : ViewModel() {
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
-    // Nuevo estado para categorías seleccionadas
     private val _selectedCategory = MutableStateFlow<String?>(null)
     val selectedCategory: StateFlow<String?> = _selectedCategory.asStateFlow()
 
@@ -39,9 +39,7 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                // Simular carga de red
                 kotlinx.coroutines.delay(1500)
-
                 val sampleProducts = listOf(
                     Product(
                         id = "1",
@@ -127,11 +125,8 @@ class MainViewModel : ViewModel() {
                     _cartItems.value = updatedItems
                 } else {
                     val newItem = CartItem(
-                        id = "${product.id}_${size}_${color}",
+                        userId = "default_user",
                         productId = product.id,
-                        productName = product.name,
-                        productPrice = product.price,
-                        productImage = product.imageUrl,
                         selectedSize = size,
                         selectedColor = color,
                         quantity = 1
@@ -189,7 +184,10 @@ class MainViewModel : ViewModel() {
     }
 
     fun getCartTotal(): Double {
-        return _cartItems.value.sumOf { it.productPrice * it.quantity }
+        return _cartItems.value.sumOf { cartItem ->
+            val product = _products.value.find { it.id == cartItem.productId }
+            (product?.price ?: 0.0) * cartItem.quantity
+        }
     }
 
     fun getCartItemsCount(): Int {
@@ -204,38 +202,31 @@ class MainViewModel : ViewModel() {
         return _products.value.filter { it.category == category }
     }
 
-    // NUEVAS FUNCIONES PARA MEJORAR EL CARTSCREEN
-
-    /**Obtiene producto asociado a un CartItem**/
     fun getProductForCartItem(cartItem: CartItem): Product? {
         return _products.value.find { it.id == cartItem.productId }
     }
 
-    /**Calcula el total de un CartItem específico**/
     fun getCartItemTotal(cartItem: CartItem): Double {
-        return cartItem.productPrice * cartItem.quantity
+        val product = getProductForCartItem(cartItem)
+        return (product?.price ?: 0.0) * cartItem.quantity
     }
 
-    /**Obtiene los productos del carrito con su información completa**/
     fun getCartItemsWithProducts(): List<Pair<CartItem, Product?>> {
         return _cartItems.value.map { cartItem ->
             cartItem to getProductForCartItem(cartItem)
         }
     }
 
-    /**Selecciona una categoría para filtrar productos**/
     fun selectCategory(category: String?) {
         _selectedCategory.value = category
     }
 
-    /**Obtiene productos filtrados por categoría seleccionada**/
     fun getFilteredProducts(): List<Product> {
         return _selectedCategory.value?.let { category ->
             _products.value.filter { it.category == category }
         } ?: _products.value
     }
 
-    /**Busca productos por nombre**/
     fun searchProducts(query: String): List<Product> {
         return if (query.isBlank()) {
             _products.value
@@ -248,24 +239,20 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    /**Obtiene todas las categorías disponibles**/
     fun getCategories(): List<String> {
         return _products.value.map { it.category }.distinct()
     }
 
-    /**Verifica si un producto está en el carrito**/
     fun isProductInCart(productId: String): Boolean {
         return _cartItems.value.any { it.productId == productId }
     }
 
-    /**Obtiene la cantidad de un producto específico en el carrito**/
     fun getProductQuantityInCart(productId: String): Int {
         return _cartItems.value
             .filter { it.productId == productId }
             .sumOf { it.quantity }
     }
 
-    /**Recarga los productos (útil para pull-to-refresh)**/
     fun refreshProducts() {
         loadSampleProducts()
     }

@@ -28,14 +28,13 @@ class ProfileViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                // Simular carga de datos del usuario
                 kotlinx.coroutines.delay(1000)
 
                 val sampleUser = User(
                     id = "1",
                     name = "Juan Pérez",
                     email = "ju.perez@duocuc.cl",
-                    phone = "+56 9 8736 9183",
+                    phone = "+56 9 8127 3819",
                     address = "Calle Principal 123, Santiago, Chile"
                 )
 

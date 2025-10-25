@@ -25,7 +25,6 @@ fun ProfileScreen(
     onViewOrders: () -> Unit,
     viewModel: MainViewModel
 ) {
-    // Vamos a usar datos de ejemplo para el perfil
     val user = remember {
         User(
             id = "1",

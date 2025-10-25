@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deptienda.viewmodel.MainViewModel
 import com.example.deptienda.data.models.Product
+import com.example.deptienda.ui.screens.CartScreen
 
 @Composable
 fun AppNavHost() {
@@ -47,7 +48,10 @@ fun AppNavHost() {
                     }
                 },
                 onCheckout = {
-                    // TODO: Implementar pantalla de checkout
+                    mainViewModel.clearCart()
+                    navController.navigate(Screens.HomeScreen.route) {
+                        popUpTo(Screens.HomeScreen.route) { inclusive = true }
+                    }
                 },
                 viewModel = mainViewModel
             )
@@ -88,7 +92,6 @@ fun AppNavHost() {
             CategoriesScreen(
                 onBackClick = { navController.popBackStack() },
                 onCategoryClick = { category ->
-                    // Filtrar productos por categoría y volver al home
                     mainViewModel.selectCategory(category)
                     navController.navigate(Screens.HomeScreen.route) {
                         popUpTo(Screens.HomeScreen.route) { inclusive = true }

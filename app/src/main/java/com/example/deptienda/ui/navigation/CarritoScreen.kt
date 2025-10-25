@@ -44,7 +44,6 @@ fun CartItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Imagen del producto
             AsyncImage(
                 model = cartItem.imageUrl,
                 contentDescription = cartItem.productName,
@@ -59,7 +58,6 @@ fun CartItem(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Información del producto
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -94,11 +92,9 @@ fun CartItem(
                 )
             }
 
-            // Controles de cantidad y eliminar
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Selector de cantidad
                 QuantitySelector(
                     quantity = cartItem.quantity,
                     onQuantityChange = onQuantityChange,
@@ -107,7 +103,6 @@ fun CartItem(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Botón eliminar
                 IconButton(
                     onClick = onRemove,
                     modifier = Modifier.size(24.dp)

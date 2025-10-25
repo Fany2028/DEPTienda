@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Order(
     @PrimaryKey val id: String,
     val userId: String = "default_user",
-    val itemsJson: String, // Para simplificar, guardamos como JSON
+    val itemsJson: String,
     val total: Double,
     val date: String,
     val status: String = "pending"

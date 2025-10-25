@@ -1,6 +1,7 @@
 package com.example.deptienda.data.models
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "cart_items",
@@ -12,10 +13,17 @@ data class CartItem(
     val selectedSize: String,
     val selectedColor: String,
     var quantity: Int = 1,
-    val addedAt: Long = System.currentTimeMillis(),
-    val cartItem: CartItem
+    val addedAt: Long = System.currentTimeMillis()
 ) {
-    // Esta propiedad no se persiste en Room
+    val productName: String
+        get() = ""
+
+    val imageUrl: String
+        get() = ""
+
+    val price: Double
+        get() = 0.0
+
     val totalPrice: Double
-        get() = 0.0 // Se calculará cuando se combine con Product
+        get() = price * quantity
 }

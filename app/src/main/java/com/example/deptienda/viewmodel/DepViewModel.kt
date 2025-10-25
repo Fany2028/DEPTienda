@@ -1,15 +1,11 @@
 package com.example.deptienda.viewmodel
 
 import android.content.Context
-import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigationevent.NavigationEvent
 import com.example.deptienda.data.models.User
-//import com.example.deptienda.data.models.LoginForm
-//import com.example.deptienda.data.models.RegisterForm
-//import com.example.deptienda.ui.navigation.NavigationEvent
-//import com.example.deptienda.ui.navigation.Screen
+import com.example.deptienda.data.repository.UserRepository
+import com.example.deptienda.ui.navigation.Screens
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -18,14 +14,32 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.UUID
+
+data class RegisterForm(
+    val name: String = "",
+    val email: String = "",
+    val phone: String = "",
+    val password: String = "",
+    val confirmPassword: String = "",
+    val address: String = ""
+)
+
+data class LoginForm(
+    val email: String = "",
+    val password: String = ""
+)
+
+sealed class NavigationEvent {
+    data class NavigateTo(val route: String) : NavigationEvent()
+    object PopBackStack : NavigationEvent()
+}
 
 class DepViewModel : ViewModel() {
-
     private lateinit var userRepository: UserRepository
 
-    // Inicializar el repository con el contexto
-    fun initialize(context: Context) {
-        userRepository = UserRepository(context)
+    fun initialize(context: Context, userDao: com.example.deptienda.data.dao.UserDao) {
+        userRepository = UserRepository(context, userDao)
     }
 
     // --- NAVEGACIÓN ---
@@ -33,7 +47,7 @@ class DepViewModel : ViewModel() {
     val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents.asSharedFlow()
 
     // --- FORMULARIO DE REGISTRO ---
-    private val _registerForm = MutableStateFlow(RegisterForm)
+    private val _registerForm = MutableStateFlow(RegisterForm())
     val registerForm: StateFlow<RegisterForm> = _registerForm.asStateFlow()
 
     private val _registerErrors = MutableStateFlow<Map<String, String>>(emptyMap())
@@ -41,9 +55,6 @@ class DepViewModel : ViewModel() {
 
     // --- FORMULARIO DE LOGIN ---
     private val _loginForm = MutableStateFlow(LoginForm())
-
-    annotation class LoginForm
-
     val loginForm: StateFlow<LoginForm> = _loginForm.asStateFlow()
 
     private val _loginErrors = MutableStateFlow<Map<String, String>>(emptyMap())
@@ -58,9 +69,9 @@ class DepViewModel : ViewModel() {
     val message: StateFlow<String?> = _message.asStateFlow()
 
     // --- FUNCIONES DE NAVEGACIÓN ---
-    fun navigateTo(screen: Screen) {
+    fun navigateTo(screen: Screens) {
         viewModelScope.launch {
-            _navigationEvents.emit(NavigationEvent.NavigateTo(route = screen))
+            _navigationEvents.emit(NavigationEvent.NavigateTo(route = screen.route))
         }
     }
 
@@ -127,26 +138,29 @@ class DepViewModel : ViewModel() {
     }
 
     fun submitRegister() {
-        validateRegisterForm()
-        if (_registerErrors.value.isEmpty()) {
-            val user = User(
-                name = _registerForm.value.name,
-                email = _registerForm.value.email,
-                phone = _registerForm.value.phone,
-                password = _registerForm.value.password,
-                address = _registerForm.value.address
-            )
+        viewModelScope.launch {
+            validateRegisterForm()
+            if (_registerErrors.value.isEmpty()) {
+                val user = User(
+                    id = generateUserId(),
+                    name = _registerForm.value.name,
+                    email = _registerForm.value.email,
+                    phone = _registerForm.value.phone,
+                    password = _registerForm.value.password,
+                    address = _registerForm.value.address
+                )
 
-            if (::userRepository.isInitialized) {
-                val success = userRepository.registerUser(user)
-                if (success) {
-                    _message.value = "¡Cuenta creada exitosamente!"
-                    userRepository.setCurrentUser(user)
-                    _currentUser.value = user
-                    _registerForm.value = RegisterForm() // Limpiar formulario
-                    navigateTo(Screen.Home)
-                } else {
-                    _message.value = "El email ya está registrado"
+                if (::userRepository.isInitialized) {
+                    val success = userRepository.registerUser(user)
+                    if (success) {
+                        _message.value = "¡Cuenta creada exitosamente!"
+                        userRepository.setCurrentUser(user)
+                        _currentUser.value = user
+                        _registerForm.value = RegisterForm() // Limpiar formulario
+                        navigateTo(Screens.HomeScreen)
+                    } else {
+                        _message.value = "El email ya está registrado"
+                    }
                 }
             }
         }
@@ -177,18 +191,20 @@ class DepViewModel : ViewModel() {
     }
 
     fun submitLogin() {
-        validateLoginForm()
-        if (_loginErrors.value.isEmpty()) {
-            if (::userRepository.isInitialized) {
-                val user = userRepository.loginUser(_loginForm.value.email, _loginForm.value.password)
-                if (user != null) {
-                    userRepository.setCurrentUser(user)
-                    _currentUser.value = user
-                    _message.value = "¡Bienvenido ${user.name}!"
-                    _loginForm.value = LoginForm() // Limpiar formulario
-                    navigateTo(Screen.Home)
-                } else {
-                    _message.value = "Email o contraseña incorrectos"
+        viewModelScope.launch {
+            validateLoginForm()
+            if (_loginErrors.value.isEmpty()) {
+                if (::userRepository.isInitialized) {
+                    val user = userRepository.loginUser(_loginForm.value.email, _loginForm.value.password)
+                    if (user != null) {
+                        userRepository.setCurrentUser(user)
+                        _currentUser.value = user
+                        _message.value = "¡Bienvenido ${user.name}!"
+                        _loginForm.value = LoginForm() // Limpiar formulario
+                        navigateTo(Screens.HomeScreen)
+                    } else {
+                        _message.value = "Email o contraseña incorrectos"
+                    }
                 }
             }
         }
@@ -196,8 +212,10 @@ class DepViewModel : ViewModel() {
 
     // --- SESIÓN ---
     fun checkCurrentUser() {
-        if (::userRepository.isInitialized) {
-            _currentUser.value = userRepository.getCurrentUser()
+        viewModelScope.launch {
+            if (::userRepository.isInitialized) {
+                _currentUser.value = userRepository.getCurrentUser()
+            }
         }
     }
 
@@ -206,7 +224,7 @@ class DepViewModel : ViewModel() {
             userRepository.logout()
             _currentUser.value = null
             _message.value = "Sesión cerrada"
-            navigateTo(Screen.Home)
+            navigateTo(Screens.HomeScreen)
         }
     }
 
@@ -219,10 +237,13 @@ class DepViewModel : ViewModel() {
         return phone.length >= 9 && phone.all { it.isDigit() }
     }
 
+    // ID único para el usuario
+    private fun generateUserId(): String {
+        return "user_${UUID.randomUUID().toString().substring(0, 8)}"
+    }
+
     // Limpiar mensajes
     fun clearMessage() {
         _message.value = null
     }
 }
-
-annotation class UserRepository(val context: Context)

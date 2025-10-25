@@ -1,6 +1,5 @@
 package com.example.deptienda.ui.components
 
-import android.text.Layout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,11 +11,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import java.lang.reflect.Modifier
 
 @Composable
 fun CategoryCard(
@@ -40,11 +39,10 @@ fun CategoryCard(
                 contentScale = ContentScale.Crop
             )
 
-            // Overlay para mejor legibilidad
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .align(Layout.Alignment.BottomCenter)
+                    .align(Alignment.BottomCenter)
                     .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f))
             )
 
@@ -53,7 +51,7 @@ fun CategoryCard(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
-                    .align(Layout.Alignment.BottomCenter)
+                    .align(Alignment.BottomCenter)
                     .padding(8.dp)
             )
         }

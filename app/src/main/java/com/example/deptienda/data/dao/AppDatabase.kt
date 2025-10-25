@@ -5,7 +5,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import android.content.Context
-import androidx.databinding.adapters.Converters
 import com.example.deptienda.data.models.Product
 import com.example.deptienda.data.models.User
 import com.example.deptienda.data.models.CartItem

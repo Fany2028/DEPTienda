@@ -27,7 +27,6 @@ fun HomeScreen(
     val products by viewModel.products.collectAsStateWithLifecycle()
     val cartItemsCount by viewModel.cartItems.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-
     val cartCount = cartItemsCount.sumOf { it.quantity }
 
     Scaffold(
@@ -41,7 +40,6 @@ fun HomeScreen(
                     )
                 },
                 actions = {
-                    // Botón de categorías
                     IconButton(onClick = onCategoriesClick) {
                         Icon(
                             imageVector = Icons.Default.Category,
@@ -49,7 +47,6 @@ fun HomeScreen(
                         )
                     }
 
-                    // Botón carrito con badge
                     BadgedBox(
                         badge = {
                             if (cartCount > 0) {
