@@ -1,4 +1,4 @@
-package com.example.deptienda.ui.screens
+package com.example.deptienda.ui.navigation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.deptienda.ui.components.CartItem
@@ -29,7 +30,6 @@ fun CartScreen(
     val cartTotal by remember { derivedStateOf { viewModel.getCartTotal() } }
     val cartItemsCount by remember { derivedStateOf { viewModel.getCartItemsCount() } }
 
-    // Obtener los items del carrito con información completa del producto
     val cartItemsWithProducts = remember(cartItems, products) {
         cartItems.mapNotNull { cartItem ->
             val product = products.find { it.id == cartItem.productId }
@@ -115,7 +115,7 @@ fun CartScreen(
                     text = "Agrega algunos productos para continuar",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(onClick = onContinueShopping) {
@@ -128,7 +128,6 @@ fun CartScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                // Resumen del carrito
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -149,7 +148,6 @@ fun CartScreen(
                     }
                 }
 
-                // Lista de items del carrito
                 LazyColumn(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(8.dp),

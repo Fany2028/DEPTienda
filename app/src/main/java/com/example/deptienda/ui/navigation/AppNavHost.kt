@@ -11,7 +11,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deptienda.viewmodel.MainViewModel
 import com.example.deptienda.data.models.Product
-import com.example.deptienda.ui.screens.CartScreen
 
 @Composable
 fun AppNavHost() {
@@ -42,12 +41,18 @@ fun AppNavHost() {
         composable(Screens.CartScreen.route) {
             CartScreen(
                 onBackClick = { navController.popBackStack() },
-                onContinueShopping = {
-                    navController.navigate(Screens.HomeScreen.route) {
-                        popUpTo(Screens.HomeScreen.route) { inclusive = true }
-                    }
-                },
+                onContinueShopping = { navController.popBackStack() },
                 onCheckout = {
+                    navController.navigate(Screens.CheckoutScreen.route)
+                },
+                viewModel = mainViewModel
+            )
+        }
+
+        composable(Screens.CheckoutScreen.route) {
+            CheckoutScreen(
+                onBackClick = { navController.popBackStack() },
+                onPaymentSuccess = {
                     mainViewModel.clearCart()
                     navController.navigate(Screens.HomeScreen.route) {
                         popUpTo(Screens.HomeScreen.route) { inclusive = true }
@@ -68,7 +73,6 @@ fun AppNavHost() {
                     viewModel = mainViewModel
                 )
             } ?: run {
-                // Manejar caso donde no hay producto seleccionado
                 navController.popBackStack()
             }
         }
@@ -78,11 +82,9 @@ fun AppNavHost() {
                 onBackClick = { navController.popBackStack() },
                 onEditProfile = {
                     // TODO: Navegar a editar perfil
-                    // navController.navigate(Screens.EditProfileScreen.route)
                 },
                 onViewOrders = {
                     // TODO: Navegar a órdenes
-                    // navController.navigate(Screens.OrdersScreen.route)
                 },
                 viewModel = mainViewModel
             )

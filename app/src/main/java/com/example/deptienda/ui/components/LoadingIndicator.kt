@@ -21,9 +21,7 @@ fun LoadingIndicator(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.primary
-        )
+        CircularProgressIndicator()
 
         Spacer(modifier = Modifier.height(16.dp))
 

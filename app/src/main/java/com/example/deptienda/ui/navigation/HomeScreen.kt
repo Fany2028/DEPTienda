@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.deptienda.data.models.Product
 import com.example.deptienda.ui.components.LoadingIndicator
-import com.example.deptienda.ui.components.ProductCard
 import com.example.deptienda.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,13 +77,36 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(products) { product ->
-                    ProductCard(
-                        product = product,
-                        onProductClick = onProductClick,
-                        onAddToCart = { productToAdd ->
-                            viewModel.addToCart(productToAdd)
+                    Card(
+                        modifier = Modifier
+                            .width(160.dp)
+                            .padding(8.dp),
+                        onClick = { onProductClick(product) }
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(12.dp)
+                        ) {
+                            Text(
+                                text = product.name,
+                                style = MaterialTheme.typography.bodyMedium,
+                                maxLines = 2
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "$${product.price.toInt()}",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(
+                                onClick = { viewModel.addToCart(product) },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text("Agregar")
+                            }
                         }
-                    )
+                    }
                 }
             }
         }
