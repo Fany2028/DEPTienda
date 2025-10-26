@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,6 +23,7 @@ fun HomeScreen(
     onProductClick: (Product) -> Unit,
     onCartClick: () -> Unit,
     onCategoriesClick: () -> Unit,
+    onProfileClick: () -> Unit,
     viewModel: MainViewModel
 ) {
     val products by viewModel.products.collectAsStateWithLifecycle()
@@ -49,6 +51,13 @@ fun HomeScreen(
                     )
                 },
                 actions = {
+                    IconButton(onClick = onProfileClick) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Perfil de usuario"
+                        )
+                    }
+
                     IconButton(onClick = onCategoriesClick) {
                         Icon(
                             imageVector = Icons.Default.Category,

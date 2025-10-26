@@ -20,16 +20,13 @@ class UserRepository(
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-    // --- OPERACIONES DE FLOW (observables) ---
     fun getAllUsers(): Flow<List<User>> = userDao.getAllUsers()
 
     fun getUserById(userId: String): Flow<User?> = userDao.getUserById(userId)
 
-    fun getUserByEmail(email: String): Flow<User?> = userDao.getUserByEmail(email)
+    fun getUserByEmail(email: String): Flow<User?> = userDao.getUserByEmailFlow(email)
 
-    // --- OPERACIONES SUSPEND ---
     suspend fun registerUser(user: User): Boolean {
-        // Verificar si el usuario ya existe
         val exists = userDao.userExists(user.email) > 0
         if (exists) {
             return false
@@ -40,9 +37,8 @@ class UserRepository(
     }
 
     suspend fun loginUser(email: String, password: String): User? {
-        val user = userDao.login(email)
-        // IMPORTANTE: Tu modelo User necesita tener campo password
-        return user?.takeIf { it.password == password }
+        val user = userDao.login(email, password)
+        return user
     }
 
     suspend fun updateUser(user: User) {
@@ -57,7 +53,6 @@ class UserRepository(
         return userDao.userExists(email) > 0
     }
 
-    // --- GESTIÓN DE SESIÓN ---
     fun setCurrentUser(user: User) {
         sharedPreferences.edit().putString(KEY_CURRENT_USER_ID, user.id).apply()
     }
@@ -79,13 +74,11 @@ class UserRepository(
         sharedPreferences.edit().remove(KEY_CURRENT_USER_ID).apply()
     }
 
-    // Función auxiliar para obtener usuario una vez (sin Flow)
     private suspend fun getUserByIdOnce(userId: String): User? {
         return userDao.getUserById(userId).firstOrNull()
     }
 
-    // Función auxiliar para obtener usuario por email una vez (sin Flow)
     suspend fun getUserByEmailOnce(email: String): User? {
-        return userDao.getUserByEmail(email).firstOrNull()
+        return userDao.getUserByEmail(email)
     }
 }

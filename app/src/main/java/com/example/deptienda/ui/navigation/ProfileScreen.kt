@@ -23,6 +23,7 @@ fun ProfileScreen(
     onBackClick: () -> Unit,
     onEditProfile: () -> Unit,
     onViewOrders: () -> Unit,
+    onLogout: () -> Unit,
     viewModel: MainViewModel
 ) {
     val user = remember {
@@ -64,7 +65,6 @@ fun ProfileScreen(
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
-            // Header del perfil
             ProfileHeader(
                 user = user,
                 cartItemsCount = cartItemsCountValue,
@@ -76,7 +76,6 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Opciones del perfil
             ProfileOptions(
                 onViewOrders = onViewOrders,
                 modifier = Modifier
@@ -86,8 +85,8 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Información de la app
             AppInfoSection(
+                onLogout = onLogout,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
@@ -211,15 +210,6 @@ private fun ProfileOptions(
                 subtitle = "Tarjetas y formas de pago",
                 onClick = { /* TODO: Navegar a métodos de pago */ }
             )
-
-            Divider()
-
-            ProfileOptionItem(
-                icon = Icons.Default.Notifications,
-                title = "Notificaciones",
-                subtitle = "Configurar notificaciones",
-                onClick = { /* TODO: Navegar a notificaciones */ }
-            )
         }
     }
 }
@@ -255,7 +245,7 @@ private fun ProfileOptionItem(
         },
         trailingContent = {
             Icon(
-                imageVector = Icons.Default.Home ,
+                imageVector = Icons.Default.ChevronRight,
                 contentDescription = "Ir",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -266,6 +256,7 @@ private fun ProfileOptionItem(
 
 @Composable
 private fun AppInfoSection(
+    onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -298,12 +289,18 @@ private fun AppInfoSection(
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedButton(
-                onClick = { /* TODO: Cerrar sesión */ },
+                onClick = onLogout,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = MaterialTheme.colorScheme.error
                 )
             ) {
+                Icon(
+                    imageVector = Icons.Default.Logout,
+                    contentDescription = "Cerrar sesión",
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
                 Text("Cerrar Sesión")
             }
         }

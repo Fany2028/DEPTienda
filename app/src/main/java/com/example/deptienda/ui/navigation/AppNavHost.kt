@@ -1,10 +1,12 @@
 package com.example.deptienda.ui.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,13 +17,35 @@ import com.example.deptienda.data.models.Product
 @Composable
 fun AppNavHost() {
     val navController = rememberNavController()
+    val context = LocalContext.current
     val mainViewModel: MainViewModel = viewModel()
     var selectedProduct by remember { mutableStateOf<Product?>(null) }
 
+    val isUserLoggedIn = remember {
+        val sharedPref = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        sharedPref.getBoolean("is_logged_in", false)
+    }
+
+    val startDestination = if (isUserLoggedIn) {
+        Screens.HomeScreen.route
+    } else {
+        Screens.LoginScreen.route
+    }
+
     NavHost(
         navController = navController,
-        startDestination = Screens.HomeScreen.route
+        startDestination = startDestination
     ) {
+        composable(Screens.LoginScreen.route) {
+            SimpleLoginScreen( // ← Cambiado a SimpleLoginScreen
+                onLoginSuccess = {
+                    navController.navigate(Screens.HomeScreen.route) {
+                        popUpTo(Screens.LoginScreen.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable(Screens.HomeScreen.route) {
             HomeScreen(
                 onProductClick = { product ->
@@ -33,6 +57,9 @@ fun AppNavHost() {
                 },
                 onCategoriesClick = {
                     navController.navigate(Screens.CategoriesScreen.route)
+                },
+                onProfileClick = {
+                    navController.navigate(Screens.ProfileScreen.route)
                 },
                 viewModel = mainViewModel
             )
@@ -85,6 +112,14 @@ fun AppNavHost() {
                 },
                 onViewOrders = {
                     // TODO: Navegar a órdenes
+                },
+                onLogout = {
+                    // Cerrar sesión simple
+                    val sharedPref = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
+                    sharedPref.edit().clear().apply()
+                    navController.navigate(Screens.LoginScreen.route) {
+                        popUpTo(Screens.ProfileScreen.route) { inclusive = true }
+                    }
                 },
                 viewModel = mainViewModel
             )
