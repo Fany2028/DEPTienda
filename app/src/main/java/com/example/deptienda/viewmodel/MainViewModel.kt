@@ -39,58 +39,136 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                kotlinx.coroutines.delay(1500)
+                kotlinx.coroutines.delay(500)
                 val sampleProducts = listOf(
                     Product(
                         id = "1",
-                        name = "Camiseta Básica Negra",
-                        price = 19.99,
-                        originalPrice = 24.99,
-                        imageUrl = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
-                        category = "Camisetas",
-                        description = "Camiseta de algodón 100% básica, perfecta para uso diario"
+                        name = "Jean Baggy",
+                        price = 29.990,
+                        originalPrice = 34.990,
+                        imageUrl = "img1_baggyplomo",
+                        category = "Pantalones",
+                        description = "Perfecto y cómodo para uso diario"
                     ),
                     Product(
                         id = "2",
-                        name = "Jeans Slim Fit",
-                        price = 49.99,
-                        imageUrl = "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
-                        category = "Pantalones",
-                        description = "Jeans ajustados de corte moderno, cómodos y elegantes"
+                        name = "Sueter diseño mariposa",
+                        price = 17.990,
+                        imageUrl = "img2_suetermariposa",
+                        category = "Sudaderas",
+                        description = "Sudadera con bello diseño de mariposa"
                     ),
                     Product(
                         id = "3",
-                        name = "Sudadera con Capucha",
-                        price = 39.99,
-                        originalPrice = 49.99,
-                        imageUrl = "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500",
+                        name = "Conjunto de verano",
+                        price = 39.990,
+                        originalPrice = 49.990,
+                        imageUrl = "img_3conjuntoverano",
+                        category = "Pantalones",
+                        description = "Conjunto de verano ideal para días veraniegos"
+                    ),
+                    Product(
+                        id = "4",
+                        name = "Sueter a rayas",
+                        price = 24.990,
+                        imageUrl = "img4_sueterrayas",
+                        category = "Sudaderas",
+                        description = "Sueter con estilo a rayas y elegante"
+                    ),
+                    Product(
+                        id = "5",
+                        name = "Sueter beige",
+                        price = 25.990,
+                        originalPrice = 29.990,
+                        imageUrl = "img5_sueterbeige",
+                        category = "Sudaderas",
+                        description = "Sudadera cómoda"
+                    ),
+                    Product(
+                        id = "6",
+                        name = "Pantalón vaquero corto",
+                        price = 26.990,
+                        imageUrl = "img6_pantalonvaquerocorto",
+                        category = "Pantalones",
+                        description = "Pantalón clásico, nunca pasa de moda"
+                    ),
+                    Product(
+                        id = "7",
+                        name = "Polerón blanco",
+                        price = 19.990,
+                        originalPrice = 25.990,
+                        imageUrl = "img7_poleronblanco",
                         category = "Sudaderas",
                         description = "Sudadera cómoda con capucha, ideal para días frescos"
                     ),
                     Product(
-                        id = "4",
-                        name = "Zapatos Deportivos",
-                        price = 79.99,
-                        imageUrl = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
-                        category = "Calzado",
-                        description = "Zapatos deportivos ultraligeros para máximo rendimiento"
+                        id = "8",
+                        name = "Sudadera diseñada",
+                        price = 32.990,
+                        originalPrice = 40.990,
+                        imageUrl = "img8_sudaderarengoku",
+                        category = "Sudaderas",
+                        description = "Sudadera con diseño personalizado"
                     ),
                     Product(
-                        id = "5",
-                        name = "Chaqueta Denim",
-                        price = 59.99,
-                        originalPrice = 69.99,
-                        imageUrl = "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-                        category = "Chaquetas",
-                        description = "Chaqueta denim clásica, nunca pasa de moda"
+                        id = "9",
+                        name = "Camiseta Harajaku",
+                        price = 12.990,
+                        imageUrl = "img9_camisetaharajaku",
+                        category = "Camisetas",
+                        description = "Camiseta de corte moderno"
                     ),
                     Product(
-                        id = "6",
-                        name = "Vestido Verano",
-                        price = 34.99,
-                        imageUrl = "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500",
+                        id = "10",
+                        name = "Sueter blanco",
+                        price = 15.990,
+                        originalPrice = 17.990,
+                        imageUrl = "img10_sueterblanco",
+                        category = "Sudaderas",
+                        description = "Sudadera cómoda"
+                    ),
+                    Product(
+                        id = "11",
+                        name = "Sudadera squelette",
+                        price = 34.990,
+                        imageUrl = "img11_suetersquelette",
+                        category = "Sudaderas",
+                        description = "Sudadera cómoda interesante diseño"
+                    ),
+                    Product(
+                        id = "12",
+                        name = "Jean holgado",
+                        price = 34.990,
+                        imageUrl = "img_jeanholgado",
+                        category = "Pantalones",
+                        description = "Pantalones cómodos para estilo y uso diario"
+                    ),
+                    Product(
+                        id = "13",
+                        name = "Vestido color azul",
+                        price = 39.99,
+                        originalPrice = 49.99,
+                        imageUrl = "img13_vestidoazul",
                         category = "Vestidos",
-                        description = "Vestido ligero perfecto para los días de verano"
+                        description = "Vestido de material cómodo y ligero"
+                    ),
+                    Product(
+                        id = "14",
+                        name = "Sudadera con Capucha",
+                        price = 19.990,
+                        originalPrice = 25.990,
+                        imageUrl = "img14_sueteroveresize",
+                        category = "Sudaderas",
+                        description = "Sudadera cómoda"
+                    ),
+                    Product(
+                        id = "15",
+                        name = "Pantalón vaquero largo",
+                        price = 29.990,
+                        originalPrice = 39.990,
+                        imageUrl = "img_pantalonvaquero",
+                        category = "Pantalones",
+                        description = "Pantalón clásico, nunca pasa de moda"
                     )
                 )
 
