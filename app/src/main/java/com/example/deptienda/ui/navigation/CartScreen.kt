@@ -8,8 +8,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,6 +33,25 @@ fun CartScreen(
     val products by viewModel.products.collectAsState()
     val cartTotal by remember { derivedStateOf { viewModel.getCartTotal() } }
     val cartItemsCount by remember { derivedStateOf { viewModel.getCartItemsCount() } }
+    val context = LocalContext.current
+
+    LaunchedEffect(cartItems, products) {
+        if (cartItems.isNotEmpty()) {
+            println("DEBUG CART - Productos en carrito: ${cartItems.size}")
+            cartItems.forEach { cartItem ->
+                val product = products.find { it.id == cartItem.productId }
+                println("DEBUG CART - ${product?.name} -> Imagen: ${product?.imageUrl}")
+
+                // Verificar si la imagen existe
+                if (product != null) {
+                    val imageResource = context.resources.getIdentifier(
+                        product.imageUrl, "drawable", context.packageName
+                    )
+                    println("DEBUG CART - Recurso de imagen: $imageResource (0 = no encontrado)")
+                }
+            }
+        }
+    }
 
     val cartItemsWithProducts = remember(cartItems, products) {
         cartItems.mapNotNull { cartItem ->

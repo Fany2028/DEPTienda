@@ -1,33 +1,25 @@
 package com.example.deptienda.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.example.deptienda.data.models.CartItem
 import com.example.deptienda.data.models.Product
-import androidx.compose.material.icons.filled.Remove
 
 @Composable
 fun CartItem(
@@ -37,6 +29,8 @@ fun CartItem(
     onRemove: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -47,22 +41,55 @@ fun CartItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Imagen del producto
-            AsyncImage(
-                model = product?.imageUrl ?: "",
-                contentDescription = product?.name ?: "Producto",
-                modifier = Modifier
-                    .size(80.dp)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant,
-                        MaterialTheme.shapes.medium
-                    ),
-                contentScale = ContentScale.Crop
-            )
+            if (product != null) {
+                val imageResource = getCartItemDrawableResource(context, product.imageUrl)
+
+                if (imageResource != 0) {
+                    Image(
+                        painter = painterResource(id = imageResource),
+                        contentDescription = product.name,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .size(80.dp)
+                            .background(
+                                MaterialTheme.colorScheme.surfaceVariant,
+                                RoundedCornerShape(8.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Img",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .background(
+                            MaterialTheme.colorScheme.surfaceVariant,
+                            RoundedCornerShape(8.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "?",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Información del producto
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -97,11 +124,9 @@ fun CartItem(
                 )
             }
 
-            // Controles cantidad y eliminar
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Selector cantidad temporal
                 Text(
                     text = "Cantidad: ${cartItem.quantity}",
                     style = MaterialTheme.typography.bodySmall,
@@ -110,7 +135,6 @@ fun CartItem(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Botones de incremento/decremento
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(
                         onClick = {
@@ -143,7 +167,6 @@ fun CartItem(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Botón eliminar
                 IconButton(
                     onClick = onRemove,
                     modifier = Modifier.size(24.dp)
@@ -156,5 +179,13 @@ fun CartItem(
                 }
             }
         }
+    }
+}
+
+fun getCartItemDrawableResource(context: android.content.Context, imageName: String): Int {
+    return try {
+        context.resources.getIdentifier(imageName, "drawable", context.packageName)
+    } catch (e: Exception) {
+        0
     }
 }

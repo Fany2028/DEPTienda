@@ -63,7 +63,7 @@ class MainViewModel : ViewModel() {
                         name = "Conjunto de verano",
                         price = 39.990,
                         originalPrice = 49.990,
-                        imageUrl = "img_3conjuntoverano",
+                        imageUrl = "img3_conjuntoverano",
                         category = "Pantalones",
                         description = "Conjunto de verano ideal para días veraniegos"
                     ),
@@ -114,7 +114,7 @@ class MainViewModel : ViewModel() {
                         id = "9",
                         name = "Camiseta Harajaku",
                         price = 12.990,
-                        imageUrl = "img9_camisetaharajaku",
+                        imageUrl = "img9_camisetaharajuku",
                         category = "Camisetas",
                         description = "Camiseta de corte moderno"
                     ),
@@ -139,7 +139,7 @@ class MainViewModel : ViewModel() {
                         id = "12",
                         name = "Jean holgado",
                         price = 34.990,
-                        imageUrl = "img_jeanholgado",
+                        imageUrl = "img12_jeanholgado",
                         category = "Pantalones",
                         description = "Pantalones cómodos para estilo y uso diario"
                     ),
@@ -157,7 +157,7 @@ class MainViewModel : ViewModel() {
                         name = "Sudadera con Capucha",
                         price = 19.990,
                         originalPrice = 25.990,
-                        imageUrl = "img14_sueteroveresize",
+                        imageUrl = "img14_sueteroversize",
                         category = "Sudaderas",
                         description = "Sudadera cómoda"
                     ),
@@ -166,7 +166,7 @@ class MainViewModel : ViewModel() {
                         name = "Pantalón vaquero largo",
                         price = 29.990,
                         originalPrice = 39.990,
-                        imageUrl = "img_pantalonvaquero",
+                        imageUrl = "img15_pantalonvaquero",
                         category = "Pantalones",
                         description = "Pantalón clásico, nunca pasa de moda"
                     )
