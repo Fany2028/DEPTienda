@@ -37,7 +37,7 @@ fun AppNavHost() {
         startDestination = startDestination
     ) {
         composable(Screens.LoginScreen.route) {
-            SimpleLoginScreen( // ← Cambiado a SimpleLoginScreen
+            SimpleLoginScreen( // Cambiado a SimpleLoginScreen por falta de tiempo
                 onLoginSuccess = {
                     navController.navigate(Screens.HomeScreen.route) {
                         popUpTo(Screens.LoginScreen.route) { inclusive = true }
