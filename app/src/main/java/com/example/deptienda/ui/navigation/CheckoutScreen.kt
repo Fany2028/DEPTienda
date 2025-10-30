@@ -131,7 +131,7 @@ fun CheckoutScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Person,
-                            contentDescription = "Información personal"  // ← CORREGIDO
+                            contentDescription = "Información personal" 
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -168,7 +168,7 @@ fun CheckoutScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
-                            contentDescription = "Dirección de envío"  // ← CORREGIDO
+                            contentDescription = "Dirección de envío" 
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
