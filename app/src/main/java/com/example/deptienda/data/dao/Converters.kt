@@ -4,8 +4,6 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-// ✅ Asegúrate de que esta importación sea correcta
-// Si CartItem está en otro paquete, ajusta la ruta
 import com.example.deptienda.data.models.CartItem
 
 class Converters {
